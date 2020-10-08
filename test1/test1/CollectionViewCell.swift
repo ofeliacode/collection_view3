@@ -59,13 +59,13 @@ class CustomViewCell: UICollectionViewCell {
     }
 
     // MARK: Public
-    //let url2 : String = "https://lorempixel.com/250/250"
 
     func setup(name: String, price: String, description: String, image: String) {
         nameLabel.text = name
         priceLabel.text = price
         descriptionLabel.text = description
-        imageView.image = nil
+        let data = try? Data(contentsOf: URL(string: "https://homepages.cae.wisc.edu/~ece533/images/cat.png")!)
+        imageView.image = UIImage(data: data!)
     }
 
     // MARK: Lifecycle
