@@ -25,7 +25,7 @@ class CustomViewCell: UICollectionViewCell {
     }
 
     // MARK: Subviews
-    
+
     private let separatorView: UIView = {
         let line = UIView()
         line.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
@@ -37,7 +37,7 @@ class CustomViewCell: UICollectionViewCell {
     private lazy var imageView: UIImageView = Self.makeImageView()
 
     // MARK: Init
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 1)
@@ -64,8 +64,10 @@ class CustomViewCell: UICollectionViewCell {
         nameLabel.text = name
         priceLabel.text = price
         descriptionLabel.text = description
-        let data = try? Data(contentsOf: URL(string: "https://homepages.cae.wisc.edu/~ece533/images/cat.png")!)
-        imageView.image = UIImage(data: data!)
+        let data = try? Data(contentsOf: URL(string: "https://lorempixel.com/250/250")!)
+        guard let loadedImage = UIImage(data: data!) else
+        {return}
+        self.imageView.image = loadedImage
     }
 
     // MARK: Lifecycle
@@ -85,6 +87,8 @@ class CustomViewCell: UICollectionViewCell {
             x: 0,
             y: max(nameLabel.frame.maxY, priceLabel.frame.maxY)
         )
+
+        imageView.frame = CGRect(x: 10, y: descriptionLabel.frame.origin.y + descriptionLabel.frame.size.height + 10, width: bounds.width - 20, height: 190)
 
         separatorView.frame = CGRect(x: 0, y: bounds.height - Style.separatorHeight, width: bounds.width, height: Style.separatorHeight)
     }
@@ -123,9 +127,9 @@ class CustomViewCell: UICollectionViewCell {
     static func makeImageView() -> UIImageView {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Img")
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.masksToBounds = true
-        imageView.layer.cornerRadius = 18
+        imageView.contentMode = .scaleAspectFit
+        //imageView.layer.masksToBounds = true
+        //imageView.layer.cornerRadius = 18
         return imageView
     }
 
@@ -148,14 +152,14 @@ class CustomViewCell: UICollectionViewCell {
         let nameSize = nameLabel.sizeThatFits(CGSize(width: width - priceSize.width, height: fittingSize.height))
         let descriptionSize = descriptionLabel.sizeThatFits(CGSize(width: width, height: fittingSize.height))
         let imageViewSize = imageView.sizeThatFits(CGSize(width: width, height: fittingSize.height))
-            
+
         let height = Style.contentInsets.top
             + max(priceSize.height, nameSize.height)
             + descriptionSize.height
             + Style.spacingBetweenDescriptionAndSeparator
             + Style.separatorHeight
             + CGFloat(200)
-            
+
 
         return CGSize(
             width: width,
@@ -163,4 +167,3 @@ class CustomViewCell: UICollectionViewCell {
         )
     }
 }
-
