@@ -162,7 +162,6 @@ extension CustomViewController: UICollectionViewDelegateFlowLayout {
             price: "price: \(dataArray[indexPath.item].price)",
             description: "description: \(dataArray[indexPath.item].description)"
            // image: dataArray[indexPath.item].image
-            //image: dataArray[indexPath.item].image
         )
     }
 }
