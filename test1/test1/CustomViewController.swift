@@ -160,8 +160,9 @@ extension CustomViewController: UICollectionViewDelegateFlowLayout {
             fittingSize: CGSize(width: collectionView.frame.width, height: .greatestFiniteMagnitude),
             name: "name: \(dataArray[indexPath.item].name + dataArray[indexPath.item].name)",
             price: "price: \(dataArray[indexPath.item].price)",
-            description: "description: \(dataArray[indexPath.item].description)",
-            image: dataArray[indexPath.item].image
+            description: "description: \(dataArray[indexPath.item].description)"
+           // image: dataArray[indexPath.item].image
+            //image: dataArray[indexPath.item].image
         )
     }
 }

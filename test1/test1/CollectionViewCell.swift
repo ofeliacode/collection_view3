@@ -131,23 +131,23 @@ class CustomViewCell: UICollectionViewCell {
 
     // MARK: Layout calculation
 
-    static func calculateSize(fittingSize: CGSize, name: String, price: String, description: String, image: UIImageView) -> CGSize {
+    static func calculateSize(fittingSize: CGSize, name: String, price: String, description: String) -> CGSize {
         let nameLabel = makeNameLabel()
         let priceLabel = makePriceLabel()
         let descriptionLabel = makeDescriptionLabel()
-        let imageView = makeImageView()
+      //  let imageView = makeImageView()
 
         let width = fittingSize.width - Style.contentInsets.left - Style.contentInsets.right
 
         nameLabel.text = name
         priceLabel.text = price
         descriptionLabel.text = description
-        imageView.image = nil
+       // imageView.image = nil
 
         let priceSize = priceLabel.sizeThatFits(CGSize(width: width, height: fittingSize.height))
         let nameSize = nameLabel.sizeThatFits(CGSize(width: width - priceSize.width, height: fittingSize.height))
         let descriptionSize = descriptionLabel.sizeThatFits(CGSize(width: width, height: fittingSize.height))
-        let imageViewSize = imageView.sizeThatFits(CGSize(width: width, height: fittingSize.height))
+       // let imageViewSize = imageView.sizeThatFits(CGSize(width: width, height: fittingSize.height))
             
         let height = Style.contentInsets.top
             + max(priceSize.height, nameSize.height)
