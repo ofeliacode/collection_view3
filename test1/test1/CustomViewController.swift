@@ -22,6 +22,7 @@ class CustomViewController: UICollectionViewController {
         layout.estimatedItemSize = CGSize(width: width, height: 10)
         return layout
     }()
+    
     // MARK: UIActivityIndicator
     
     var aiView: UIView?
@@ -52,11 +53,12 @@ class CustomViewController: UICollectionViewController {
         self.refresher.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         collectionView!.addSubview(refresher!)
         title = "Products"
+        
+        self.collectionView.contentInset = UIEdgeInsets(top: 11.0, left: 11.0, bottom: 8.0, right: 11.0)
         collectionView.register(CustomViewCell.self, forCellWithReuseIdentifier: CustomViewCell.identifier)
-        collectionView.backgroundColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 1)
+        collectionView.backgroundColor = UIColor(red: 0.968, green: 0.980, blue: 0.976, alpha: 1)
         collectionView.collectionViewLayout = layout
         fetchProducts(refresh: true)
-       
     }
     
     // MARK: refresh
@@ -117,15 +119,16 @@ class CustomViewController: UICollectionViewController {
         return dataArray.count
     }
    
-        
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomViewCell.identifier, for: indexPath) as! CustomViewCell
         cell.setup(
-            name: "name: \(dataArray[indexPath.item].name + dataArray[indexPath.item].name)",
-            price: "price: \(dataArray[indexPath.item].price)",
-            description: "description: \(dataArray[indexPath.item].description)",
-            image: dataArray[indexPath.item].image
+            image: dataArray[indexPath.item].image,
+            name: dataArray[indexPath.item].name,
+            price: "\(dataArray[indexPath.item].price) $",
+            discount: "\(dataArray[indexPath.item].discount_amount) $"            
         )
+       // cell.buttonWithHeart.tag = indexPath.row
+        cell.layer.cornerRadius = 8
         return cell
     }
 
@@ -135,9 +138,7 @@ class CustomViewController: UICollectionViewController {
         vc.labelName = dataArray[indexPath.item].name
         vc.labelPrice = dataArray[indexPath.item].price
         vc.labelDescription = dataArray[indexPath.item].description
-       // vc.imageView = dataArray[indexPath.item].image
         vc.labelDiscount = dataArray[indexPath.item].discount_amount
-        
         self.navigationController?.pushViewController(vc, animated: true)
     }
    //paging
@@ -151,17 +152,13 @@ class CustomViewController: UICollectionViewController {
    }
 }
 extension CustomViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        return CustomViewCell.calculateSize(
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CustomViewCell.calculateSize (
             fittingSize: CGSize(width: collectionView.frame.width, height: .greatestFiniteMagnitude),
-            name: "name: \(dataArray[indexPath.item].name + dataArray[indexPath.item].name)",
-            price: "price: \(dataArray[indexPath.item].price)",
-            description: "description: \(dataArray[indexPath.item].description)"
-           // image: dataArray[indexPath.item].image
+            image: dataArray[indexPath.item].image,
+            name: dataArray[indexPath.item].name,
+            price: dataArray[indexPath.item].price,
+            discount: dataArray[indexPath.item].discount_amount
         )
     }
 }

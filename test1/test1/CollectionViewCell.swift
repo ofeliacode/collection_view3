@@ -14,33 +14,27 @@ class CustomViewCell: UICollectionViewCell {
     // MARK: Nested types
 
     private enum Style {
-        static let contentInsets = UIEdgeInsets(top: 12, left: 16, bottom: 0, right: 16)
+        static let contentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         static let spacingBetweenNameAndDescription: CGFloat = 0
         static let spacingBetweenNameAndPrice: CGFloat = 4
         static let spacingBetweenDescriptionAndSeparator: CGFloat = 4
-        static let separatorHeight: CGFloat = 1
-        static let priceFont = UIFont.systemFont(ofSize: 16, weight: .bold)
-        static let nameFont = UIFont.systemFont(ofSize: 16, weight: .regular)
-        static let descriptionFont = UIFont.systemFont(ofSize: 16, weight: .regular)
+        static let priceFont = UIFont.systemFont(ofSize: 12, weight: .regular)
+        static let nameFont = UIFont.systemFont(ofSize: 14, weight: .regular)
     }
 
     // MARK: Subviews
 
-    private let separatorView: UIView = {
-        let line = UIView()
-        line.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
-        return line
-    }()
+    private lazy var imageView: UIImageView = Self.makeImageView()
     private lazy var nameLabel: UILabel = Self.makeNameLabel()
     private lazy var priceLabel: UILabel = Self.makePriceLabel()
-    private lazy var descriptionLabel: UILabel = Self.makeDescriptionLabel()
-    private lazy var imageView: UIImageView = Self.makeImageView()
+    private lazy var discountLabel: UILabel = Self.makeDiscountLabel()
 
     // MARK: Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 1)
+        backgroundColor = .white
+        contentView.layer.cornerRadius = 8
         setupSubviews()
     }
     @available(*, unavailable)
@@ -51,54 +45,60 @@ class CustomViewCell: UICollectionViewCell {
     // MARK: Setup
 
     private func setupSubviews() {
+        contentView.addSubview(imageView)
         contentView.addSubview(nameLabel)
         contentView.addSubview(priceLabel)
-        contentView.addSubview(descriptionLabel)
-        contentView.addSubview(separatorView)
-        contentView.addSubview(imageView)
+        contentView.addSubview(discountLabel)
+        contentView.addSubview(buttonWithHeart)
+        print(buttonWithHeart)
+        //contentView.bringSubviewToFront(buttonWithHeart)
     }
 
     // MARK: Public
-
-    func setup(name: String, price: String, description: String, image: String) {
+   
+    func setup(image: String, name: String, price: String, discount: String) {
+        let url = URL(string: "https://lorempixel.com/250/250")
+         URLSession.shared.dataTask(with: url!) { (data, response, error) in
+                      if let imageData = data {
+                          DispatchQueue.main.async {
+                              self.imageView.image = UIImage(data: imageData)
+                               print("Show image data")
+                          }
+                          print("Did download  image data")
+                      }
+          }.resume()
         nameLabel.text = name
         priceLabel.text = price
-        descriptionLabel.text = description
-        let data = try? Data(contentsOf: URL(string: "https://lorempixel.com/250/250")!)
-        guard let loadedImage = UIImage(data: data!) else
-        {return}
-        self.imageView.image = loadedImage
-    }
-
+        discountLabel.text = discount
+     }
     // MARK: Lifecycle
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        priceLabel.sizeToFit()
-        priceLabel.frame.origin = CGPoint(x: bounds.width - priceLabel.frame.width, y: Style.contentInsets.top)
-
+        imageView.sizeToFit()
+        imageView.frame = CGRect(x: 0, y: 0, width: 191, height: 167)
         let nameLabelSize = nameLabel.sizeThatFits(CGSize(width: bounds.width - priceLabel.frame.width, height: .greatestFiniteMagnitude))
         nameLabel.frame.size = nameLabelSize
-        nameLabel.frame.origin = CGPoint(x: 0, y: Style.contentInsets.top)
-
-        let descriptionLabelSize = descriptionLabel.sizeThatFits(CGSize(width: bounds.width, height: .greatestFiniteMagnitude))
-        descriptionLabel.frame.size = descriptionLabelSize
-        descriptionLabel.frame.origin = CGPoint(
-            x: 0,
-            y: max(nameLabel.frame.maxY, priceLabel.frame.maxY)
-        )
-
-        imageView.frame = CGRect(x: 10, y: descriptionLabel.frame.origin.y + descriptionLabel.frame.size.height + 10, width: bounds.width - 20, height: 190)
-
-        separatorView.frame = CGRect(x: 0, y: bounds.height - Style.separatorHeight, width: bounds.width, height: Style.separatorHeight)
-    }
+        nameLabel.frame.origin = CGPoint(x: 10, y: imageView.frame.maxY)
+        priceLabel.sizeToFit()
+        priceLabel.frame.origin = CGPoint(x: 10, y: nameLabel.frame.maxY)
+        discountLabel.sizeToFit()
+        discountLabel.frame.origin = CGPoint(x: priceLabel.frame.width + 11, y: nameLabel.frame.maxY + 1)
+        buttonWithHeart.frame = CGRect(x:  imageView.frame.maxX + 5, y:  imageView.frame.maxY + 5, width: 250, height: 250)
+}
 
     // MARK: Subview factories
-
+    static func makeImageView() -> UIImageView {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "Img")
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = 8
+        return imageView
+    }
+    
     static func makeNameLabel() -> UILabel {
         let label = UILabel()
         label.textAlignment = .left
-        label.text = "name:"
         label.font = Style.nameFont
         label.numberOfLines = 0
         return label
@@ -107,62 +107,70 @@ class CustomViewCell: UICollectionViewCell {
     static func makePriceLabel() -> UILabel {
         let label = UILabel()
         label.textAlignment = .left
-        label.font = Style.priceFont
-        // TODO: move to Style
-        label.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
-        label.text = "price:"
+        label.textColor = .black
+        label.font = Style.priceFont        
         return label
     }
-
-    static func makeDescriptionLabel() -> UILabel {
+    func strikeThroughText (_ text:String) -> NSAttributedString {
+            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: text)
+        attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: NSMakeRange(0, attributeString.length))
+            return attributeString
+        }
+    
+    static func makeDiscountLabel() -> UILabel {
         let label = UILabel()
-        label.textAlignment = .left
-        label.font = Style.descriptionFont
-        // TODO: move to Style
-        label.textColor = UIColor(red: 0.459, green: 0.459, blue: 0.459, alpha: 1)
-        label.text = "description:"
+        label.textAlignment = .right
+        label.textColor = UIColor(red: 0.369, green: 0.369, blue: 0.369, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         label.numberOfLines = 0
         return label
     }
-    static func makeImageView() -> UIImageView {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "Img")
-        imageView.contentMode = .scaleAspectFit
-        //imageView.layer.masksToBounds = true
-        //imageView.layer.cornerRadius = 18
-        return imageView
-    }
-
+    
+    private  let buttonWithHeart: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.setImage(UIImage(named: "heart.png"), for: .normal)
+        btn.frame = CGRect(x: 100, y: 100, width: 100, height: 100)
+        btn.addTarget(self, action: Selector(("btnTouched")), for:.touchUpInside)
+      
+        return btn
+    }()
+        func btnTouched (_ sender: UIButton) {
+                if buttonWithHeart.isSelected {
+                    buttonWithHeart.isSelected = false
+                    buttonWithHeart.setImage(UIImage(named: "heart2.png"), for: .normal)
+                } else {
+                    buttonWithHeart.isSelected = true
+                    buttonWithHeart.setImage(UIImage(named: "heart.png"), for: .normal)
+                }
+        }
+    
+    
     // MARK: Layout calculation
 
-    static func calculateSize(fittingSize: CGSize, name: String, price: String, description: String) -> CGSize {
+    static func calculateSize(fittingSize: CGSize, image: String, name: String, price: String, discount: String) -> CGSize {
+        let imageView = makeImageView()
         let nameLabel = makeNameLabel()
         let priceLabel = makePriceLabel()
-        let descriptionLabel = makeDescriptionLabel()
-        let imageView = makeImageView()
-
+        let discountLabel = makeDiscountLabel()
+        
         let width = fittingSize.width - Style.contentInsets.left - Style.contentInsets.right
 
         nameLabel.text = name
         priceLabel.text = price
-        descriptionLabel.text = description
-        //imageView.image = image
-
+        imageView.image = UIImage(contentsOfFile: image)
+        discountLabel.text = discount
+        
+        let imageViewSize = imageView.sizeThatFits(CGSize(width: width, height: fittingSize.height))
         let priceSize = priceLabel.sizeThatFits(CGSize(width: width, height: fittingSize.height))
         let nameSize = nameLabel.sizeThatFits(CGSize(width: width - priceSize.width, height: fittingSize.height))
-        let descriptionSize = descriptionLabel.sizeThatFits(CGSize(width: width, height: fittingSize.height))
-        let imageViewSize = imageView.sizeThatFits(CGSize(width: width, height: fittingSize.height))
-
+        let discountSize = discountLabel.sizeThatFits(CGSize(width: width - priceSize.width, height: fittingSize.height))
+        
         let height = Style.contentInsets.top
-            + max(priceSize.height, nameSize.height)
-            + descriptionSize.height
-            + Style.spacingBetweenDescriptionAndSeparator
-            + Style.separatorHeight
-            + CGFloat(200)
-
-
+            + max(priceSize.height, nameSize.height, discountSize.height)
+            + CGFloat(185)
+        
         return CGSize(
-            width: width,
+            width: width/2,
             height: height
         )
     }
