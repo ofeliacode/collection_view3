@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         let vc = UINavigationController(rootViewController: CustomViewController(collectionViewLayout: UICollectionViewFlowLayout()))
+
         window?.rootViewController = vc
         return true
     }

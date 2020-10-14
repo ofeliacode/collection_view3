@@ -43,6 +43,7 @@ class CustomViewController: UICollectionViewController {
     // MARK: Private properties
   
     var dataArray = [Datas]()
+    
     var page = 0
     // MARK: UIViewController
 
@@ -127,7 +128,6 @@ class CustomViewController: UICollectionViewController {
             price: "\(dataArray[indexPath.item].price) $",
             discount: "\(dataArray[indexPath.item].discount_amount) $"            
         )
-       // cell.buttonWithHeart.tag = indexPath.row
         cell.layer.cornerRadius = 8
         return cell
     }
@@ -135,6 +135,8 @@ class CustomViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         let vc = DetailViewController()
+        vc.imageView = dataArray[indexPath.item].image
+        print(dataArray[indexPath.item].image)
         vc.labelName = dataArray[indexPath.item].name
         vc.labelPrice = dataArray[indexPath.item].price
         vc.labelDescription = dataArray[indexPath.item].description

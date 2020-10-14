@@ -9,6 +9,7 @@
 import UIKit
 
 class CustomViewCell: UICollectionViewCell {
+    
     static let identifier = "customCellIdentifier"
 
     // MARK: Nested types
@@ -46,12 +47,11 @@ class CustomViewCell: UICollectionViewCell {
 
     private func setupSubviews() {
         contentView.addSubview(imageView)
+        contentView.addSubview(gradientView)
+        contentView.addSubview(buttonWithHeart)
         contentView.addSubview(nameLabel)
         contentView.addSubview(priceLabel)
         contentView.addSubview(discountLabel)
-        contentView.addSubview(buttonWithHeart)
-        print(buttonWithHeart)
-        //contentView.bringSubviewToFront(buttonWithHeart)
     }
 
     // MARK: Public
@@ -84,7 +84,7 @@ class CustomViewCell: UICollectionViewCell {
         priceLabel.frame.origin = CGPoint(x: 10, y: nameLabel.frame.maxY)
         discountLabel.sizeToFit()
         discountLabel.frame.origin = CGPoint(x: priceLabel.frame.width + 11, y: nameLabel.frame.maxY + 1)
-        buttonWithHeart.frame = CGRect(x:  imageView.frame.maxX + 5, y:  imageView.frame.maxY + 5, width: 250, height: 250)
+        buttonWithHeart.frame = CGRect(x:  168, y:  152, width: 12, height: 9)
 }
 
     // MARK: Subview factories
@@ -111,11 +111,6 @@ class CustomViewCell: UICollectionViewCell {
         label.font = Style.priceFont        
         return label
     }
-    func strikeThroughText (_ text:String) -> NSAttributedString {
-            let attributeString: NSMutableAttributedString =  NSMutableAttributedString(string: text)
-        attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: 1, range: NSMakeRange(0, attributeString.length))
-            return attributeString
-        }
     
     static func makeDiscountLabel() -> UILabel {
         let label = UILabel()
@@ -126,25 +121,32 @@ class CustomViewCell: UICollectionViewCell {
         return label
     }
     
-    private  let buttonWithHeart: UIButton = {
+    private let buttonWithHeart: UIButton = {
         let btn = UIButton(type: .custom)
         btn.setImage(UIImage(named: "heart.png"), for: .normal)
-        btn.frame = CGRect(x: 100, y: 100, width: 100, height: 100)
-        btn.addTarget(self, action: Selector(("btnTouched")), for:.touchUpInside)
-      
+        btn.addTarget(self, action: #selector(btnPressed(_:)), for: UIControl.Event.touchUpInside)
         return btn
     }()
-        func btnTouched (_ sender: UIButton) {
-                if buttonWithHeart.isSelected {
-                    buttonWithHeart.isSelected = false
-                    buttonWithHeart.setImage(UIImage(named: "heart2.png"), for: .normal)
-                } else {
-                    buttonWithHeart.isSelected = true
-                    buttonWithHeart.setImage(UIImage(named: "heart.png"), for: .normal)
-                }
+    
+    @objc func btnPressed (_ sender: UIButton) {
+        if sender.isSelected {
+            sender.setImage(UIImage(named: "heart2.png"), for: .selected)
+            sender.isSelected = false
+            }else {
+                sender.setImage(UIImage(named: "heart.png"), for: . normal)
+                sender.isSelected = true
+            }
         }
     
-    
+    private let gradientView: UIView = {
+        let view = UIView()
+        view.frame = CGRect(x:  157, y:  145, width: 34, height: 22)
+        let gradient = CAGradientLayer()
+        gradient.frame = view.bounds
+        gradient.colors = [UIColor.clear, UIColor.white.withAlphaComponent(4).cgColor]
+        view.layer.insertSublayer(gradient, at: 0)
+        return view
+    }()
     // MARK: Layout calculation
 
     static func calculateSize(fittingSize: CGSize, image: String, name: String, price: String, discount: String) -> CGSize {
@@ -152,14 +154,12 @@ class CustomViewCell: UICollectionViewCell {
         let nameLabel = makeNameLabel()
         let priceLabel = makePriceLabel()
         let discountLabel = makeDiscountLabel()
-        
         let width = fittingSize.width - Style.contentInsets.left - Style.contentInsets.right
-
         nameLabel.text = name
         priceLabel.text = price
         imageView.image = UIImage(contentsOfFile: image)
         discountLabel.text = discount
-        
+    
         let imageViewSize = imageView.sizeThatFits(CGSize(width: width, height: fittingSize.height))
         let priceSize = priceLabel.sizeThatFits(CGSize(width: width, height: fittingSize.height))
         let nameSize = nameLabel.sizeThatFits(CGSize(width: width - priceSize.width, height: fittingSize.height))
@@ -167,8 +167,7 @@ class CustomViewCell: UICollectionViewCell {
         
         let height = Style.contentInsets.top
             + max(priceSize.height, nameSize.height, discountSize.height)
-            + CGFloat(185)
-        
+            + CGFloat(200)
         return CGSize(
             width: width/2,
             height: height

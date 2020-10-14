@@ -11,6 +11,7 @@ import Foundation
 struct Response: Decodable {
     let data: [Datas]
     let meta: Meta
+   
 }
 struct Datas: Decodable {
     let name: String
@@ -18,6 +19,7 @@ struct Datas: Decodable {
     let description: String
     let discount_amount: String
     let image: String
+    let categories: [Categoriess]
 }
 struct Meta: Decodable {
     let pagination: Pagination
@@ -26,4 +28,8 @@ struct Pagination: Decodable {
     let total: Int
     let pages: Int
     let limit: Int
+}
+struct Categoriess: Decodable {
+    let id: Int
+    let name: String
 }
