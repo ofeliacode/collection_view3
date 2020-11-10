@@ -16,7 +16,7 @@ class CustomViewController: UICollectionViewController {
     // MARK: Layout
     
     var layout: UICollectionViewFlowLayout = {
-        let layout = UICollectionViewFlowLayout()
+        let layout = UICollectionViewFlowLayout.init()
         layout.scrollDirection = .vertical
         let width = UIScreen.main.bounds.size.width
         layout.estimatedItemSize = CGSize(width: width, height: 10)
@@ -54,12 +54,17 @@ class CustomViewController: UICollectionViewController {
         self.refresher.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         collectionView!.addSubview(refresher!)
         title = "Products"
-        
         self.collectionView.contentInset = UIEdgeInsets(top: 11.0, left: 11.0, bottom: 8.0, right: 11.0)
         collectionView.register(CustomViewCell.self, forCellWithReuseIdentifier: CustomViewCell.identifier)
         collectionView.backgroundColor = UIColor(red: 0.968, green: 0.980, blue: 0.976, alpha: 1)
-        collectionView.collectionViewLayout = layout
+        collectionView..init(collectionViewLayout: layout)
+        
+
+        
         fetchProducts(refresh: true)
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: refresh
@@ -71,6 +76,7 @@ class CustomViewController: UICollectionViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         collectionView.frame = view.bounds
+        
     }
 
     // MARK: Private

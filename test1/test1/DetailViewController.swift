@@ -15,14 +15,6 @@ class DetailViewController: UICollectionViewController {
     var labelDescription = ""
     var labelDiscount = ""
     var imageView = ""
-    var labelCategories = ""
-    
-    let scrollView: UIScrollView = {
-            let scrV = UIScrollView()
-        scrV.translatesAutoresizingMaskIntoConstraints = false
-        scrV.backgroundColor = .cyan
-            return scrV
-        }()
     
     //имя
     var imageView2: UIImageView = {
@@ -91,15 +83,7 @@ class DetailViewController: UICollectionViewController {
         label.numberOfLines = 0
         return label
     }()
-    var categoriesTitle: UILabel = {
-           let label = UILabel()
-           label.textAlignment = .right
-           label.text = "Categories"
-           label.textColor = .black
-           label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-           label.numberOfLines = 0
-           return label
-       }()
+
    
     @objc func goBack(sender:UIBarButtonItem){
         self.navigationController?.popToRootViewController(animated: true)
@@ -108,20 +92,13 @@ class DetailViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 1)
-      //stackView.frame = view.frame
-        view.addSubview(scrollView)
-        scrollView.addSubview(imageView2)
-        scrollView.addSubview(labelName2)
-        scrollView.addSubview(labelDescription2)
-        scrollView.addSubview(labelPrice2)
-        scrollView.addSubview(labelDiscount2)
-        
-        scrollView.addSubview(circleView)
-        scrollView.addSubview(buttonWithHeart)
-        scrollView.addSubview(categoriesTitle)
-
-        collectionView.register(DetailViewCell.self, forCellWithReuseIdentifier: DetailViewCell.identifier)
-        //collectionView.contentInsetAdjustmentBehavior = .never
+        view.addSubview(imageView2)
+        view.addSubview(labelName2)
+        view.addSubview(labelDescription2)
+        view.addSubview(labelPrice2)
+        view.addSubview(labelDiscount2)
+        view.addSubview(circleView)
+        view.addSubview(buttonWithHeart)
         self.title = labelName
         labelName2.text = "name: \(labelName)"
         labelPrice2.text = "\(labelPrice) USD Dollars"
@@ -145,15 +122,6 @@ class DetailViewController: UICollectionViewController {
         labelDescription2.translatesAutoresizingMaskIntoConstraints = false
         labelDiscount2.translatesAutoresizingMaskIntoConstraints = false
         imageView2.translatesAutoresizingMaskIntoConstraints = false
-        categoriesTitle.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-
-        scrollView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 8.0).isActive = true
-        scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 8.0).isActive = true
-        scrollView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -8.0).isActive = true
-       // scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -8.0).isActive = true
-
-                
         
         imageView2.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 93).isActive = true
         imageView2.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant:0).isActive = true
@@ -175,27 +143,6 @@ class DetailViewController: UICollectionViewController {
         labelDiscount2.topAnchor.constraint(equalTo:  labelDescription2.bottomAnchor, constant: 7).isActive = true
         labelDiscount2.rightAnchor.constraint(equalTo: self.view.rightAnchor,constant:-16).isActive = true
         
-        categoriesTitle.topAnchor.constraint(equalTo: labelDiscount2.bottomAnchor, constant: 15).isActive = true
-        categoriesTitle.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant:16).isActive = true
-    }
-}
-var dataArray2 = [Categoriess]()
-
-extension DetailViewController {
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-          return 1
-    }
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailViewCell.identifier, for: indexPath) as! DetailViewCell
-        cell.setup2(name: dataArray2[indexPath.item].name)
-        return cell
-        
-    }
-}
-extension DetailViewController: UICollectionViewDelegateFlowLayout {
-   
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            let width = (view.frame.width - 49) / 2
-            return CGSize(width: width, height: 31)
         }
 }
+

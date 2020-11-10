@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		FA05370F2517C92300E1E89D /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA05370E2517C92300E1E89D /* CollectionViewCell.swift */; };
-		FA7017B62537370D0045C700 /* DetailViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7017B52537370D0045C700 /* DetailViewCell.swift */; };
 		FA9367562519072100947823 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9367552519072100947823 /* Data.swift */; };
 		FABBA24C2522422000BCA066 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABBA24B2522422000BCA066 /* DetailViewController.swift */; };
 		FAEA33F024F64E4D00696919 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEA33EF24F64E4D00696919 /* AppDelegate.swift */; };
@@ -21,7 +20,6 @@
 		7E23FA0CD5545C03724C63C1 /* Pods-test1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test1.debug.xcconfig"; path = "Target Support Files/Pods-test1/Pods-test1.debug.xcconfig"; sourceTree = "<group>"; };
 		8604436A4C86A419A3C3600D /* Pods-test1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test1.release.xcconfig"; path = "Target Support Files/Pods-test1/Pods-test1.release.xcconfig"; sourceTree = "<group>"; };
 		FA05370E2517C92300E1E89D /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
-		FA7017B52537370D0045C700 /* DetailViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewCell.swift; sourceTree = "<group>"; };
 		FA9367552519072100947823 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		FABBA24B2522422000BCA066 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		FAEA33EC24F64E4D00696919 /* test1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = test1.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,7 +78,6 @@
 				FAEA33FD24F64E5200696919 /* Info.plist */,
 				FA9367552519072100947823 /* Data.swift */,
 				FABBA24B2522422000BCA066 /* DetailViewController.swift */,
-				FA7017B52537370D0045C700 /* DetailViewCell.swift */,
 			);
 			path = test1;
 			sourceTree = "<group>";
@@ -225,7 +222,6 @@
 				FA05370F2517C92300E1E89D /* CollectionViewCell.swift in Sources */,
 				FA9367562519072100947823 /* Data.swift in Sources */,
 				FABBA24C2522422000BCA066 /* DetailViewController.swift in Sources */,
-				FA7017B62537370D0045C700 /* DetailViewCell.swift in Sources */,
 				FAEA33F424F64E4D00696919 /* CustomViewController.swift in Sources */,
 				FAEA33F024F64E4D00696919 /* AppDelegate.swift in Sources */,
 			);
